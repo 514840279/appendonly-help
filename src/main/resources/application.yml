@@ -1,0 +1,8 @@
+user:
+  path: "C:\\Users\\Administrator\\Desktop"
+  file: "appendonly.aof"
+  del-start-with: "*2"
+  del-context-start-with: "FINANCE.listhash"
+  exp-start-with: "*3"
+  exp-context-start-with: "FINANCE.listhash"
+  encoding: "ISO-8859-1"

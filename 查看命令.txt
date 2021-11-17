@@ -1,0 +1,25 @@
+-- 查看倒数多少行
+cat appendonly.aof | tail -5
+tail -n 30 appendonly.aof 
+
+-- 删除文件倒数多少行
+cp appendonly.aof  appendonly.aof_bak
+mv dump.rdb dump.rdb1
+chmod +x delfile.sh
+sh delfile.sh
+
+
+
+EXPIRE 过期
+PERSIST 永久
+
+-- 强制到处key到文本
+redis-cli --raw  -p 6379 --scan --pattern "FINANCE.listhash:*" >> temp0.log
+redis-cli --raw  -p 6380 --scan --pattern "FINANCE.listhash:*" >> temp1.log
+redis-cli --raw  -p 6381 --scan --pattern "FINANCE.listhash:*" >> temp2.log
+
+-- 批量修改key为永久
+redis-cli  -h 192.168.0.40 -p 6379 keys "FINANCE.listhash:*" | xargs  -i  redis-cli -h 192.168.0.40 -p 6379 PERSIST {}
+redis-cli  -h 192.168.0.33 -p 6380 keys "FINANCE.listhash:*" | xargs  -i  redis-cli -h 192.168.0.33 -p 6380 PERSIST {}
+redis-cli  -h 192.168.0.34 -p 6381 keys "FINANCE.listhash:*" | xargs  -i  redis-cli -h 192.168.0.34 -p 6381 PERSIST {}
+
